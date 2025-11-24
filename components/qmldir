@@ -1,0 +1,7 @@
+module components
+MyText 1.0 MyText.qml
+MyLabel 1.0 MyLabel.qml
+MyTextField 1.0 MyTextField.qml
+MyTextArea 1.0 MyTextArea.qml
+MyImage 1.0 MyImage.qml
+ApplicationWindow 1.0 ApplicationWindow.qml
