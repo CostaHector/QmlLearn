@@ -594,6 +594,21 @@ ApplicationWindow {
                             console.log("ViewTypes.TREE", ViewTypes.TREE);
                         }
                     }
+                    Text {
+                        text: "当前概率是:"
+                    }
+                    TextField {
+                        text: TieAnalyse.probability.toFixed(4);
+                        placeholderText: "概率显示在此处";
+                        readOnly: true;
+                        selectByMouse: true;
+                    }
+                    Button {
+                        text: "点击我刷新概率"
+                        onClicked: {
+                            TieAnalyse.updateProbability(Math.random());
+                        }
+                    }
                 }
             }
         }

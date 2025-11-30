@@ -3,6 +3,7 @@
 #include "FileOpener.h"
 #include "StaticCalulator.h"
 #include "ViewTypes.h"
+#include "TieAnalyse.h"
 #include <QQmlContext>
 
 int main(int argc, char *argv[]) {
@@ -43,6 +44,16 @@ int main(int argc, char *argv[]) {
   // qmlRegisterType<ViewTypes>("com.example", 1, 0, "ViewTypes");
   // 3. 或者注册为不可实例化的类型
   qmlRegisterUncreatableType<ViewTypes>("com.example", 1, 0, "ViewTypes", "ViewTypes 是枚举容器，不能实例化");
+
+
+  // 注册单例
+  qmlRegisterSingletonType<TieAnalyse>(
+      "com.example", 1, 0, "TieAnalyse",
+      [](QQmlEngine *engine, QJSEngine *scriptEngine) -> QObject* {
+        Q_UNUSED(engine)
+        Q_UNUSED(scriptEngine)
+        return &TieAnalyse::GetInst();
+      });
 
   QQmlApplicationEngine engine;
   const QUrl url(QStringLiteral("qrc:/main.qml"));
