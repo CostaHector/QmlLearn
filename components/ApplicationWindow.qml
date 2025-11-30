@@ -1,7 +1,9 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import QtQuick.Window 2.15
 import "../components" as Components
+import com.example 1.0
 
 ApplicationWindow {
     id: mainWindow
@@ -84,6 +86,44 @@ ApplicationWindow {
             TabButton {
                 text: "3. 标签"
                 property int myindex: 3;
+                background: Rectangle {
+                    color: tabBar.currentIndex === parent.myindex ? "white" : tabBar.unselectedGrey;
+                    border.color: tabBar.currentIndex === parent.myindex ? "cyan" : "white";
+                    radius: 15;
+                    border.width: 5
+                }
+
+                contentItem: Text {
+                    text: parent.text;
+                    font: parent.font;
+                    color: "black";  // 固定为黑色确保可读性
+                    horizontalAlignment: Text.AlignHCenter;
+                    verticalAlignment: Text.AlignVCenter;
+                }
+            }
+
+            TabButton {
+                text: "4. anchor"
+                property int myindex: 4;
+                background: Rectangle {
+                    color: tabBar.currentIndex === parent.myindex ? "white" : tabBar.unselectedGrey;
+                    border.color: tabBar.currentIndex === parent.myindex ? "cyan" : "white";
+                    radius: 15;
+                    border.width: 5
+                }
+
+                contentItem: Text {
+                    text: parent.text;
+                    font: parent.font;
+                    color: "black";  // 固定为黑色确保可读性
+                    horizontalAlignment: Text.AlignHCenter;
+                    verticalAlignment: Text.AlignVCenter;
+                }
+            }
+
+            TabButton {
+                text: "计算器"
+                property int myindex: 5;
                 background: Rectangle {
                     color: tabBar.currentIndex === parent.myindex ? "white" : tabBar.unselectedGrey;
                     border.color: tabBar.currentIndex === parent.myindex ? "cyan" : "white";
@@ -401,6 +441,161 @@ ApplicationWindow {
                 }
             }
 
+
+            Rectangle {
+                Image {
+                    id: imageInCenter
+                    anchors.left: parent.left
+                    anchors.top: parent.top
+                    source: "qrc:/Cristiano Ronaldo 0.jpg"
+                    width: 320
+                    fillMode: Image.PreserveAspectFit
+                }
+
+                Image {
+                    id: imageInRightTop
+                    anchors.left: imageInCenter.right;
+                    anchors.top: parent.top;
+                    anchors.leftMargin: 10;
+                    source: "qrc:/Kaka - 1.png";
+                    width: imageInCenter.width / 3;
+                    height: imageInCenter.height;
+                }
+
+                Image {
+                    id: imageInLeftBottom
+                    anchors.left: parent.left;
+                    anchors.top: imageInCenter.bottom;
+                    anchors.topMargin: 10;
+                    source: "qrc:/Kaka - 1.png";
+                    width: imageInCenter.width;
+                    height: imageInCenter.height / 3;
+                }
+
+                Image {
+                    id: imageInRightBottom
+                    anchors.left: imageInLeftBottom.right;
+                    anchors.top: imageInLeftBottom.top;
+                    anchors.leftMargin: 10;
+                    source: "qrc:/Kaka - 1.png";
+                    readonly property string imageLocalPath: "../../Kaka - 1.png";
+                    width: imageInRightTop.width;
+                    height: imageInLeftBottom.height;
+
+                    MouseArea {
+                        anchors.fill: parent;
+                        cursorShape: Qt.PointingHandCursor  // 鼠标悬停时显示手型 ArrowCursor
+                        onClicked: {
+                            console.log("equal?", parent === imageInRightBottom);
+                            console.log("点击图片，路径:", imageInRightBottom.source.toString())
+
+                            fileOpenerInst.printPath(imageInRightBottom.imageLocalPath);
+                            fileOpenerInst.openFile(imageInRightBottom.imageLocalPath);
+
+                            FileOpener.printPath(imageInRightBottom.imageLocalPath);
+                            FileOpener.openFile(imageInRightBottom.imageLocalPath);
+                        }
+                    }
+                }
+
+
+                Text {
+                    id: textUnderImageId
+                    text: "Text\nA\nSingle\nRow\nHere\it\nis"
+                    anchors.top: imageInLeftBottom.bottom;
+                    anchors.left: parent.left;
+                    anchors.topMargin: 10
+                }
+
+                TextArea {
+                    id: textAreaUnderImageId
+                    text: "TextArea multiRow [readOnly: false 无输出框 但可以输入]"
+                    wrapMode: TextArea.Wrap;      // 换行模式
+                    readOnly: false;                  // 只读模式
+                    selectByMouse: true;              // 允许鼠标选择
+                    anchors.left: textUnderImageId.right;
+                    anchors.leftMargin: 10
+                    anchors.verticalCenter: textUnderImageId.verticalCenter
+                }
+            }
+
+            Rectangle {
+                visible: true
+                GridLayout {
+                    columns: 4
+                    Label{
+                        text: "lhs:"
+                        Layout.columnSpan: 1
+                    }
+                    TextField {
+                        id: lhsNumberID
+                        selectByMouse: true;
+                        placeholderText: "input a left hand"
+                    }
+                    Label{
+                        text: "rhs:"
+                        Layout.columnSpan: 1
+                    }
+                    TextField {
+                        id: rhsNumberID
+                        selectByMouse: true;
+                        placeholderText: "input a right hand"
+                    }
+                    Label{
+                        text: "ans:"
+                        Layout.columnSpan: 1
+                    }
+                    TextArea {
+                        id: ansNumberID
+                        placeholderText: "Answers will be here";
+                        Layout.columnSpan: 1;
+                        selectByMouse: true;
+                        readOnly: true;
+                    }
+                    Button {
+                        text: "copy ans"
+                        Layout.columnSpan: 2;
+                        onClicked: {
+
+                        }
+                    }
+                    Button {
+                        text: "calculate now"
+                        Layout.columnSpan: 4;
+                        onClicked: {
+                            let lhsStr = lhsNumberID.text.trim();
+                            let rhsStr = rhsNumberID.text.trim();
+                            if (!lhsStr) {
+                                ansNumberID.text = "错误：左操作数不能为空";
+                                return;
+                            }
+                            if (!rhsStr) {
+                                ansNumberID.text = "错误：右操作数不能为空";
+                                return;
+                            }
+                            const DEFAULT_RADIX = 10;
+                            let lhsNumber = parseInt(lhsStr, DEFAULT_RADIX);
+                            let rhsNumber = parseInt(rhsStr, DEFAULT_RADIX);
+                            // 检查转换是否成功
+                            if (isNaN(lhsNumber)) {
+                                ansNumberID.text = "错误：左操作数不是有效的整数";
+                                return;
+                            }
+                            if (isNaN(rhsNumber)) {
+                                ansNumberID.text = "错误：右操作数不是有效的整数";
+                                return;
+                            }
+                            let ansNumber = StaticCalulator.add(lhsNumber, rhsNumber);
+                            ansNumberID.text = String(ansNumber);
+                            console.log(ansNumber.toString() === String(ansNumber));
+
+                            console.log("ViewTypes.LIST", ViewTypes.LIST);
+                            console.log("ViewTypes.TABLE", ViewTypes.TABLE);
+                            console.log("ViewTypes.TREE", ViewTypes.TREE);
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -12,9 +12,25 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Quick)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Quick)
 
+
+file(GLOB HEADERS
+"${CMAKE_CURRENT_SOURCE_DIR}/src/*.h"
+"${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp"
+"${CMAKE_CURRENT_SOURCE_DIR}/src/*.hxx")
+
+file(GLOB SOURCES
+"${CMAKE_CURRENT_SOURCE_DIR}/src/*.c"
+"${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
+"${CMAKE_CURRENT_SOURCE_DIR}/src/*.cxx"
+"${CMAKE_CURRENT_SOURCE_DIR}/src/*.inc")
+
+set(SRV_HEADER_PATH
+    "${CMAKE_CURRENT_SOURCE_DIR}/src")
+
 set(PROJECT_SOURCES
-        main.cpp
-        qml.qrc
+    main.cpp
+    qml.qrc
+    ${SOURCES}
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -39,6 +55,11 @@ else()
         )
     endif()
 endif()
+
+target_sources(QmlLearn PUBLIC
+    ${HEADERS}
+    ${SOURCES})
+target_include_directories(${PROJECT_NAME} PUBLIC ${SRV_HEADER_PATH})
 
 target_link_libraries(QmlLearn
   PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick)
