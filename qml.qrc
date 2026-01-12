@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>components/MyText.qml</file>
+        <file>components/qmldir</file>
+        <file>components/MyLabel.qml</file>
+        <file>components/MyTextField.qml</file>
+        <file>components/MyTextArea.qml</file>
+        <file>components/MyImage.qml</file>
+        <file>components/ApplicationWindow.qml</file>
+        <file>Cristiano Ronaldo 0.jpg</file>
+        <file>Kaka - 1.png</file>
+    </qresource>
+</RCC>
